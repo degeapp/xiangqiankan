@@ -2,7 +2,7 @@ package com.jianz;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-/**测试类*//*123456789*/
+/**启动类*/
 @SpringBootApplication
 public class Degeapp1Application {
 
