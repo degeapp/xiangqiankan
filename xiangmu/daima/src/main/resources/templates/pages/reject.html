@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>向钱看-快乐生活，快乐工作，尽在向钱看</title>
+		<link type="text/css" rel="stylesheet" href="http://www.happyjob.com/templates/new_temp/css/common.css" />
+		<link type="text/css" rel="stylesheet" href="http://www.happyjob.com/templates/new_temp/css/home.css" />
+		<link type="text/css" rel="stylesheet" href="css/yzm.css" />
+	</head>
+
+	<body>
+		<!--头部-->
+		<div class="head">
+			<div class="wrap">
+				<span class="fr">
+            <a href="doLogin">登录</a>丨
+            <a class="mr15" href="#">注册</a>
+                    <a href="#"   >关于我们</a>
+        </span>
+				<div class="mr20 city">
+					<i>石家庄市</i>
+					<span>[切换城市]</span>
+					<em></em>
+					<div class="choice">
+						<a href="#">石家庄市</a>
+						<a href="#">天津市</a>
+						<a href="#">郑州市</a>
+						<a href="#">济南市</a>
+						<a href="#">太原市</a>
+						<a href="#">北京市</a>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="nav2">
+			<div class="wrap center">
+				<a href="index.php"><img src="img/logo.png"></a>
+			</div>
+		</div>
+		<div class="wrap loginbox">
+			<div class="login">
+				<ul class="tab_nav clearfix">
+					<li onclick="selectUtype('1')">求职用户</li>
+					<li onclick="selectUtype('2')">企业用户</li>
+				</ul>
+				<form method="post" name="form1" id="form1">
+
+					<div class="tab_cont">
+						<ul>
+							<li><input placeholder="账号" class="txt" type="text" name="username" required="true" missingMessage="账号必须填写" id="username"></li>
+							<li><input placeholder="设置密码" class="txt" type="password" missingMessage="密码必须填写" name="password" id="pwd"></li>
+							<li><input placeholder="确认密码" class="txt" type="password" missingMessage="密码必须填写" name="repwd" onblur="jianc()" id="repwd"></li>
+							<li> <span class="code fr" id="checkCode" onclick="createCode()"></span>
+								<input placeholder="请输入正确的验证码" onblur="validateCode()" class="txt" type="text" name="yzm" id="inputCode" /></li>
+							<!--<li><button id="send_auth" class="num fr" type="button">获取验证码</button><input placeholder="手机验证" class="txt02" type="text" name="auth" id="auth"></li>-->
+							<li><input placeholder="账号" class="txt" type="hidden"  id="qufen" name="qufen" value="1"></li>
+				</form>
+				<li><input value="立即注册" onclick="login()" class="btn" type="button" id="submit" ;></li>
+				<li class="fontS12 center">已有账号，
+					<a class="fontC03 enter" href="doLogin">立即登录<i></i></a>
+				</li>
+				</ul>
+				</div>
+			</div>
+		</div>
+
+		<div class="foot mt30">
+			<div class="wrap center">©2019 德哥苹果园食品有限公司 丨 专属兼职神器 丨 冀ICP备15013734</div>
+		</div>
+		<div class="gotop"></div>
+		<script type="text/javascript" language="javascript" src="http://www.happyjob.com/templates/new_temp/js/jquery-1.7.2-min.js"></script>
+		<script type="text/javascript" language="javascript" src="http://www.happyjob.com/templates/new_temp/js/common.js"></script>
+		<script type="text/javascript" language="javascript" src="js/yzm.js"></script>
+		<script type="text/javascript" src="js/jquery-1.4.2.js"></script>
+		<script>
+			function login() {
+				$.ajax({ //几个参数需要注意一下
+					type: "POST", //方法类型
+					dataType: "json", //预期服务器返回的数据类型
+					url: "user/doInsertObject", //url
+					data: $('#form1').serialize(),
+					success: function(result) {
+						window.location.href = "doLogin";
+					},
+					error: function() {
+						alert("异常！");
+					}
+				});
+			}
+
+			function check() {
+				$("#username").blur(function() {
+					var a = $(this).val();
+					var changUrl = "user/doFindObjectByUserName?username="+a;
+					$.get(changUrl, function(str) {
+						console.log(str.data);
+						if(str.data == '1') {
+							alert("此账户已存在");
+							location.reload();
+						}
+					});
+				});
+			}
+
+			function selectUtype(a) {
+				console.log(a);
+				$("#qufen").val(a);
+			}
+
+			function jianc() {
+				with(document.all) {
+					if(pwd.value != repwd.value) {
+						alert("两次密码不一致，请重新输入！")
+						pwd.value = "";
+						repwd.value = "";
+					} else return true;
+
+				}
+			}
+			$(document).ready(function() {
+				check();
+				createCode();
+			});
+		</script>
+	</body>
+
+</html>

@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jianz.degeapp.dao.MessageDao">
+	<insert id="insertObject"
+		parameterType="com.jianz.degeapp.entity.Message">
+		insert into message
+		(name,createtime,address,number,tel,boss,pay,
+		money,publish,status,classw,worktime,context,requirement,username,zt)
+		values
+		(#{name},now(),#{address},#{number},#{tel},#{boss},#{pay},
+		#{money},#{publish},#{status},#{classw},#{worktime},#{context},#{requirement},#{username},#{zt})
+	</insert>
+	<delete id="deleteObject" parameterType="int">
+		delete from message
+		where id=#{id}
+	</delete>
+	<select id="findObjects" resultType="map">
+		select * from message
+		<include refid="queryWhere" />
+		order by createtime desc
+	</select>
+	<!-- 修改数据表信息 -->
+	<update id="UpdateById"
+		parameterType="com.jianz.degeapp.entity.Message">
+		update message set name=#{name},createtime=now(),
+		address=#{address},number=#{number},tel=#{tel},
+		boss=#{boss},pay=#{pay},money=#{money},publish=#{publish},
+		status=#{status},classw=#{classw},worktime=#{worktime},context=#{context},requirement=#{requirement}
+		where id=#{id}
+	</update>
+	<select id="findObjcetById" resultType="map">
+			select c.id cid,c.name cname,(select count(z.mid)from zjs z where z.mid=m.id)as uu,
+			c.tel ctel,c.address cadd,c.autherization ca,m.* from
+			company c,message m  where c.boss=m.boss and m.id=#{id} ;
+	</select>
+	
+	
+	<!--  select c.name cname,count(m.name) mname from company c,message m,zjs where c.boss=m.boss and m.id=zjs.mid and m.id=19; -->
+	<!--职位按照状态查询 -->
+	<select id="findObjectsByUserName" resultType="map">
+		select * from
+		message where username=#{username} and zt=#{zt}
+	</select>
+	<!-- 按照登录用户查询 -->
+
+	<select id="findObjectsByName" resultType="map">
+		select * from message
+		where username=#{username}
+	</select>
+	<!-- 模糊查询 -->
+
+
+	<select id="findObjectsByUser" resultType="map">
+		select * from message
+		<include refid="queryWhereId" />
+	</select>
+
+
+
+	<update id="UpdateZtById"
+		parameterType="com.jianz.degeapp.entity.Message">
+		update message set zt=#{zt}
+		where id=#{id}
+	</update>
+
+	<sql id="queryWhereId">
+		<where>
+			<if test="name!=null and name!=''">
+				name like concat("%",#{name},"%")
+			</if>
+			and username=#{username}
+		</where>
+	</sql>
+	<sql id="queryWhere">
+		<where>
+			<if test="zt!=null and zt!=''">
+				zt =#{zt}
+			</if>
+
+		</where>
+	</sql>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</mapper>

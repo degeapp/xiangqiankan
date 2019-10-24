@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>向钱看-快乐生活，快乐工作，尽在向钱看</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="renderer" content="webkit">
+<meta http-equiv="X-UA-Compatible" content="IE=9">
+<!-- 引入 Bootstrap -->
+<link
+	href="http://www.happyjob.com/templates/new_temp/css/bootstrap.min.css"
+	rel="stylesheet">
+<link href="http://www.happyjob.com/templates/new_temp/css/newpc.css"
+	rel="stylesheet">
+<link
+	href="http://www.happyjob.com/templates/new_temp/css/datepicker.css"
+	rel="stylesheet">
+<script type="text/javascript" src="js/jquery-1.4.2.js"></script>
+<script type="text/javascript" src="js/tiaozhuan.js"></script>
+<script type="text/javascript" src="js/grtiaozhuan.js"></script>
+<body>
+	<div class="nav_top">
+		<div class="container">
+			<a class="pull-right" href="#">关于我们</a> <span class="pull-right mr15">您好，<a
+				onclick="dogrzx()" id="user"><a href="doLogout" class="ml10">[注销]</a></span>
+		</div>
+	</div>
+	<div class="navbar nav01">
+		<div class="container">
+			<div class="navbar-header">
+				<button class="navbar-toggle collapsed" type="button"
+					data-toggle="collapse" data-target=".navbar-collapse">
+					<span class="sr-only">向钱看</span> <span class="icon-bar"></span> <span
+						class="icon-bar"></span> <span class="icon-bar"></span>
+				</button>
+				<span class="navbar-brand clearfix"> <a href="#"><img
+						class="pull-left" src="img/logo.png"></a>
+				</span>
+			</div>
+			<div class="navbar-collapse collapse" role="navigation">
+				<ul class="nav navbar-nav mt10 ml10" id="menu">
+					<li><a onclick="dogszy()">公司主页</a></li>
+					<li><a onclick="dozwgl()">职位管理</a></li>
+					<li class="cur"><a onclick="dogrzx()">个人中心</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<div class="container">
+		<div class="row clearfix">
+			<div class="col-md-3 col-sm-4" style="">
+				<div class="box02" style="border-top: none;">
+					<ul class="list_menu">
+						<li class="cur"><a onclick="doxzzw()"><span
+								class="glyphicon icon01 mr5"></span>发布职位</a></li>
+						<li><a onclick="dozwgl()"><span
+								class="glyphicon icon02 mr5"></span>修改职位</a></li>
+						<li><a onclick="doxgmm()"><span
+								class="glyphicon icon04 mr5"></span>修改密码</a></li>
+						<li><a href="#"><span class="glyphicon icon04 mr5"></span>信息管理</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+			<form class="form-horizontal" role="form" method="post" id="form1"
+				onsubmit="return false">
+				<div class="col-md-9 col-sm-8">
+					<div class="box02">
+						<p class="fontS16 ml20 mt20">
+							<span class="glyphicon icon02 mr5"></span>发布兼职信息
+						</p>
+						<div class="password">
+							<div class="form-group">
+								<label class="col-sm-3 col-xs-4 control-label"><span
+									class="text-danger mr5">*</span>工作名称：</label>
+								<div class="col-sm-9 col-xs-8">
+									<input type="text" class="form-control" name="name" id="name"
+										placeholder="请输入工作名称" value="">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 col-xs-4 control-label"><span
+									class="text-danger mr5">*</span>工作时间：</label>
+								<div class="col-sm-9 col-xs-8">
+									<input type="date" class="form-control" name="worktime"
+										id="time" placeholder="工作时间" value="">
+										
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 col-xs-4 control-label"><span
+									class="text-danger mr5">*</span>需求：</label>
+								<div class="col-sm-9 col-xs-8">
+									<input type="text" class="form-control" name="requirement"
+										id="requirement" placeholder="" value="">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 col-xs-4 control-label">工作地点：</label>
+								<div class="col-sm-9 col-xs-8">
+									<input type="text" class="form-control" name="address"
+										id="address" placeholder="" value="">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 col-xs-4 control-label">招聘人数：</label>
+								<div class="col-sm-9 col-xs-8">
+									<input type="text" class="form-control" name="number"
+										id="number" placeholder="" value="">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 col-xs-4 control-label"><span
+									class="text-danger mr5">*</span>联系电话：</label>
+								<div class="col-sm-9 col-xs-8">
+									<input type="text" class="form-control" name="tel" id="tel"
+										placeholder="请输入企业邮箱" value="">
+								</div>
+							</div>
+							<!-- <div class="form-group">
+								<label class="col-sm-3 col-xs-4 control-label"><span
+									class="text-danger mr5">*</span>联系人：</label>
+								<div class="col-sm-9 col-xs-8">
+									<input type="hidden" class="form-control" name="boss" id="boss"
+										placeholder="" value="">
+								</div>
+							</div> -->
+							<input type="hidden" class="form-control" name="boss" id="boss"
+								placeholder="" value="">
+							<div class="form-group">
+								<label class="col-sm-3 col-xs-4 control-label"><span
+									class="text-danger mr5">*</span>结算方式：</label>
+								<div class="col-sm-9 col-xs-8">
+									<input type="text" class="form-control" name="pay" id="pay"
+										placeholder="" value="">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 col-xs-4 control-label"><span
+									class="text-danger mr5">*</span>薪资：</label>
+								<div class="col-sm-9 col-xs-8">
+									<input type="text" class="form-control" name="money" id="money"
+										placeholder="" value="">
+								</div>
+							</div>
+
+							<div class="form-group">
+								<label class="col-sm-3 col-xs-4 control-label"><span
+									class="text-danger mr5">*</span>发布人：</label>
+								<div class="col-sm-9 col-xs-8">
+									<input type="text" class="form-control" name="publish"
+										id="publish" placeholder="" value="">
+								</div>
+							</div>
+
+							<!-- <div class="form-group">
+								<label class="col-sm-3 col-xs-4 control-label"><span
+									class="text-danger mr5">*</span>工作状态：</label>
+								<div class="col-sm-9 col-xs-8"> -->
+									<input type="hidden" class="form-control" name="status"
+										id="status" placeholder="" value="尚未开始">
+							<!-- 	</div>
+							</div> -->
+							<div class="form-group">
+								<label class="col-sm-3 col-xs-4 control-label"><span
+									class="text-danger mr5">*</span>兼职类型：</label>
+								<div class="col-sm-9 col-xs-8">
+									<input type="text" class="form-control" name="classw"
+										id="classw" placeholder="" value="">
+								</div>
+							</div>
+
+							<div class="form-group">
+								<label class="col-sm-3 col-xs-4 control-label"><span
+									class="text-danger mr5">*</span>工作内容：</label>
+								<div class="col-sm-9 col-xs-8">
+									<textarea class="form-control" style="height: 150px;"
+										name="context" id="context" placeholder="请输入企业简介"></textarea>
+								</div>
+
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 col-xs-4 control-label"><span
+									class="text-danger mr5">*</span></label>
+								<div class="col-sm-9 col-xs-8">
+									<input type="hidden" class="form-control" name="username"
+										id="username" placeholder="" value="">
+								</div>
+								<div class="col-sm-9 col-xs-8">
+									<input type="hidden" class="form-control" name="zt" id="zt"
+										placeholder="" value="3">
+								</div>
+								<div class="form-group mt20">
+									<div class="col-sm-offset-3 col-sm-9 col-xs-offset-4 col-xs-8">
+										<button type="submit" onclick="login()"
+											class="btn btn-success btn-lg" id="data_button">发布职位</button>
+									</div>
+								</div>
+							</div>
+						</div>
+			</form>
+		</div>
+	</div>
+	</div>
+	<script type="text/javascript">
+		var i =0;
+		function login() {
+			alert("职位需经平台管理员审核通过后才允许报名，请您及时关注平台消息");
+			/* i+=i;
+			if(i=3){
+				alert("发布次数已达上限，如需再次发送请充值！")
+				return ;
+			} */
+			var url = location.search; //获取url中"?"符后的字串
+			if (url.indexOf("?") != -1) { //判断是否有参数
+				var str = url.substr(1); //从第一个字符开始 因为第0个是?号 获取所有除问号的所有符串
+				strs = str.split("=");
+				var username = strs[1];
+			}
+			$.ajax({ //几个参数需要注意一下
+				type : "POST",//方法类型
+				dataType : "json",//预期服务器返回的数据类型
+				url : "message/doInsertObject",//url
+				data : $('#form1').serialize(),
+				success : function(result) {
+					window.location.href = "doCompany?username=" + username;
+				},
+				error : function() {
+					alert("异常！");
+				}
+			});
+		}
+		$(document).ready(function() {
+			var username = getCookie("username");
+			$("#user").html(username);
+			$("#username").val(username);
+			doMeun(username);
+
+			$.ajax({
+
+				url : "company/doFindCompanyByUserName?username=" + username,//后台请求的数据，用的是PHP
+				dataType : "json",//数据格式 
+				type : "post",//请求方式
+				async : false,//是否异步请求
+				success : function(data) { //如果请求成功，返回数据。
+					console.log(data);
+					var html = "";
+					var ca = data.data;
+
+					if (ca[0].boss == null || ca[0].boss == "") {
+						alert("发布失败,请先完善用户信息!");
+						window.location.href = "doQiyerenz";
+					}else if(ca[0].qufen==2){
+						alert("您还没有经过平台管理员认证，暂时不能发布职位！")
+						
+						window.location.href = "doCompany";
+					}else if(ca[0].qufen==4){
+						alert("您的账户已经被禁用，请您联系管理员审核通过后发布职位！！")
+						window.location.href = "doCompany";
+					}
+					$("#boss").val(ca[0].boss);
+				}
+			});
+
+		});
+	</script>
+	<div class="foot mt20">
+		<div class="container">
+			<p class="text-center">©2019 德哥苹果食品有限公司丨 向钱看，专属兼职神器 丨
+				冀ICP备15013734</p>
+		</div>
+	</div>
+</body>
+
+</html>

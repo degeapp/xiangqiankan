@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jianz.degeapp.dao.CompanyDao">
+	<select id="findCompanyByUserName" resultType="map">
+		select * from company where username=#{username}
+	</select>
+	<select id="findCompanyByUserRoot" resultType="map">
+	select m.*,u.qufen q,u.createtime from company m,user u 
+	<include refid="queryWhere" />;
+	</select>
+	<update id="updateCompanyByUserName"  parameterType="com.jianz.degeapp.entity.Company">
+		update company set
+		name=#{name},boss=#{boss},tel=#{tel},address=#{address},
+		autherization=#{autherization},jianjie=#{jianjie} 
+		where username=#{username}
+	</update>
+	
+	<insert id="insertObjectUserName">
+		insert into company 
+		(username,qufen)
+		values
+		(#{username},#{qufen})
+	</insert>
+	
+	
+	<update id="UpdateZtById"
+		parameterType="com.jianz.degeapp.entity.Company">
+		update company set qufen=#{qufen}
+		where id=#{id}
+	</update>
+	<sql id="queryWhere">
+		<where>
+		 m.username=u.username
+			<if test="qufen!=null and qufen!=''">
+				and m.qufen =#{qufen}
+			</if>
+
+		</where>
+	</sql>
+	
+</mapper>

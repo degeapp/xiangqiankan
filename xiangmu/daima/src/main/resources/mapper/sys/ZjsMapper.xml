@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jianz.degeapp.dao.ZjsDao">
+	<insert id="insertObject"
+		parameterType="com.jianz.degeapp.entity.Zjs">
+		insert into zjs
+		(id,username,mid,createtime)
+		values
+		(null,#{username},#{mid},now())
+	</insert>
+
+	<select id="findObjectsByUserName" resultType="map">
+		select m.*,z.createtime cl from message m,zjs z where m.id=z.mid and
+		z.username=#{username}
+	</select>
+
+
+	<select id="findCountByUserName" resultType="int">
+		select count(*) from message m,zjs z where m.id=z.mid and
+		z.username=#{username}
+	</select>
+
+	<select id="findObjectsByMid" resultType="map">
+		select i.*,z.addr,z.qdtime from iz_user i,zjs z where z.username=i.username and z.mid=#{id}
+	</select>
+	<!-- 判断该求职者是否报名过职位 -->
+
+
+
+	<delete id="deleteObjectByUserName"
+		parameterType="com.jianz.degeapp.entity.Zjs">
+		delete from zjs where username=#{username} and mid=#{mid}
+	</delete>
+
+	<!--删除根据职位中的id对应的报名信息 -->
+	<delete id="deleteByMid">
+	delete from  zjs where mid=#{mid}
+	</delete>
+	
+	
+	
+	<update id="doinsertmap" parameterType="com.jianz.degeapp.entity.Zjs">
+	update zjs set ip=#{ip},addr=#{add},qdtime=now() where mid=#{mid} and username=#{username}
+		
+	</update>
+	
+	
+
+</mapper>

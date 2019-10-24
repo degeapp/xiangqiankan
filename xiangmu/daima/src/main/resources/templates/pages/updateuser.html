@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>向钱看-快乐生活，快乐工作，尽在向钱看</title>
+<link type="text/css" rel="stylesheet"
+	href="http://www.happyjob.com/templates/new_temp/css/common.css" />
+<link type="text/css" rel="stylesheet"
+	href="http://www.happyjob.com/templates/new_temp/css/home.css" />
+<script type="text/javascript" src="js/jquery-1.4.2.js"></script>
+<script type="text/javascript" src="js/tiaozhuan.js"></script>
+<script type="text/javascript" src="js/grtiaozhuan.js"></script>
+</head>
+<body>
+	<!--头部-->
+	<div class="head">
+		<div class="wrap">
+			<span class="fr"> <em class="mr15">您好<a onclick="doPerson" id="user"><a href="doLogout">[注销]</a></em> <a
+				href="index.php?act=about">关于我们</a>
+			</span>
+			<div class="mr20 city">
+				<i>石家庄市</i> <span>[切换城市]</span> <em></em>
+			</div>
+		</div>
+	</div>
+	<!--导航-->
+	<div class="nav">
+		<div class="wrap clearfix">
+			<a class="fl" href="#"><img src="img/logo.png"></a>
+			<div class="navcont fl" style="width: 400px;">
+				<a onclick="doindex()">全部兼职</a> <a class="on" href="#">我的中心</a>
+			</div>
+		</div>
+	</div>
+	<div class="wrap subg mt10">
+		<div class="sbg2 clearfix">
+			<div class="side sub_nav fl">
+				<a onclick="dojz()"><em class="icon02"></em>我的兼职</a> <a class="on"
+					href="#"><em class="icon03"></em>个人信息</a> <a onclick="doupdatem()"><em
+					class="icon17"></em>密码管理</a>
+			</div>
+			<div class="sub_cont fr mycont">
+				<form class="form-horizontal" method="post" id="form1">
+					<div class="bank">
+						<p class="menu fontS16">
+							<em class="icon01 fl mr5"></em>个人信息
+						</p>
+						<ul class="formbox">
+							<li><span>姓名</span><input class="txt" placeholder="请输入姓名"
+								type="text" id="name" name="name"></li>
+							<li><span>工作经验</span><input class="txt"
+								placeholder="请输入工作经验" type="text" id="experience"
+								name="experience" value=""></li>
+							<li><span>性别</span><input class="txt" placeholder="请输入性别"
+								type="text" id="gender" name="gender" value=""></li>
+							<li><span>学位</span><input class="txt" placeholder="请输入学位"
+								type="text" id="learn" name="learn" value=""></li>
+							<li><span>电话</span><input class="txt" placeholder="请输入电话"
+								type="text" id="phone" name="phone" value=""></li>
+							<li><span>邮箱</span><input class="txt" placeholder="请输入您的邮箱"
+								type="text" id="mail" name="mail" value=""></li>
+							<li><span>QQ</span><input class="txt" placeholder="请输入您的QQ号"
+								type="text" id="qq" name="qq" value=""></li>
+							<li><span>健康证</span><input class="txt" placeholder="请输入健康证"
+								type="text" id="healthy" name="healthy" value=""></li>
+							<li><span>工作城市</span><input type="text"
+								class="laydate-icon txt" id="city" name="city" value=""
+								placeholder="请填写您的工作城市"></li>
+						</ul>
+						<div class="button">
+							<input value="确定修改" type="button" onclick="login()"
+								id="my_resume_button">
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	<div class="foot mt30">
+		<div class="wrap center">©2019 德哥食品有限公司 丨 兼职乐，专属兼职神器 丨
+			冀ICP备15013734</div>
+	</div>
+</body>
+</html>
+<script type="text/javascript">
+	$(document).ready(function() {
+		var username = getCookie("username");
+		$("#user").html(username);
+		var username = getCookie("username");
+		$.ajax({
+			url : "izUser/doFindIzUserByUserName?username=" + username,//后台请求的数据，用的是PHP
+			dataType : "json",//数据格式 
+			type : "post",//请求方式
+			async : false,//是否异步请求
+			success : function(data) { //如果请求成功，返回数据。
+				var html = "";
+				var ca = data.data;
+				for (var i = 0; i < ca.length; i++) { //遍历data数组
+					var ls = ca[i];
+					$("#name").val(ls.name);
+					$("#experience").val(ls.experience);
+					$("#gender").val(ls.gender);
+					$("#learn").val(ls.learn);
+					$("#phone").val(ls.phone);
+					$("#mail").val(ls.mail);
+					$("#qq").val(ls.qq);
+					$("#healthy").val(ls.healthy);
+					$("#city").val(ls.city);
+				}
+			}
+		})
+	});
+	function login() {
+		var username = getCookie("username");
+		$.ajax({ //几个参数需要注意一下
+			type : "POST",//方法类型
+			dataType : "json",//预期服务器返回的数据类型
+			url : "izUser/doUpdateByUserName?username=" + username,//url
+			data : $('#form1').serialize(),
+			success : function(data) {
+				window.location.href = "doPersonmin";
+			},
+			error : function() {
+				alert("异常！");
+			}
+		});
+	}
+</script>

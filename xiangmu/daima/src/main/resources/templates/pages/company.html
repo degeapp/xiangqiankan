@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>通知发布-快乐生活，快乐工作，尽在向钱看</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=9">
+		<link href="http://www.happyjob.com/templates/new_temp/css/bootstrap.min.css" rel="stylesheet">
+		<link href="http://www.happyjob.com/templates/new_temp/css/newpc.css" rel="stylesheet">
+		<link href="http://www.happyjob.com/templates/new_temp/css/datepicker.css" rel="stylesheet">
+		<script type="text/javascript" src="js/jquery-1.4.2.js"></script>
+		<script type="text/javascript" src="js/tiaozhuan.js"></script>
+		<script type="text/javascript" src="js/grtiaozhuan.js"></script>
+	</head>
+
+	<body>
+		<div class="nav_top">
+			<div class="container">
+				<a class="pull-right" href="#">关于我们</a> <span class="pull-right mr15">您好<a
+				onclick="dogrzx()" id="user"></a><a href="doLogout" class="ml10">[注销]</a></span>
+				<span class="ml10"></span>
+			</div>
+		</div>
+		<div class="navbar nav01">
+			<div class="container">
+				<div class="navbar-header">
+					<button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target=".navbar-collapse">
+					<span class="sr-only">向钱看</span> <span class="icon-bar"></span> <span
+						class="icon-bar"></span> <span class="icon-bar"></span>
+				</button>
+					<span class="navbar-brand clearfix"> <a href="#"><img
+						class="pull-left" src="img/logo.png"></a>
+				</span>
+				</div>
+				<div class="navbar-collapse collapse" role="navigation">
+					<a onclick="doxzzw()" class="btn btn-danger pull-right mt10 hidden-xs" style="color: #fff">发布新职位</a>
+					<ul class="nav navbar-nav mt10 ml10" id="menu">
+						<li class="cur">
+							<a onclick="dogszy()">公司主页</a>
+						</li>
+						<li>
+							<a onclick="dozwgl()">职位管理</a>
+						</li>
+						<li>
+							<a onclick="dogrzx()">个人中心</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+
+		<div class="container" style="min-height: 660px;">
+			<div class="row box01 mt10" id="test1" style="">
+				 <marquee  direction="up" onMouseOut="this.start()"  onMouseOver="this.stop()" style="text-align: center; color:red; font-size:30px" scrollamount="4px" >您现在有[1]条职位待审核</marquee>
+				<table width="500" border="1" style="text-align: center;margin-left: 20%;">
+				 
+					<tr>
+						<th scope="col">标题</th>
+						<th scope="col">内容</th>
+						<th scope="col">发布时间</th>
+						<th scope="col">发布人</th>
+						<th scope="col">操作</th>
+					</tr>
+					
+					
+				</table>
+
+			</div>
+			<h3 class="text-center">
+			<img
+				src="http://www.happyjob.com/templates/new_temp/new_company_images/tu1.jpg">
+		</h3>
+			<div class="clearfix mt20">
+				<a href="#" class="pull-left imgbox"> <img src="http://www.happyjob.com/templates/new_temp/new_company_images/tu2.jpg">
+				</a>
+				<a href="#" class="pull-right imgbox"> <img src="http://www.happyjob.com/templates/new_temp/new_company_images/tu3.jpg">
+				</a>
+			</div>
+		</div>
+		<div class="foot mt20">
+			<div class="container">
+				<p class="text-center">©2019 德哥苹果食品有限公司 丨 快速到岗、高效匹配的兼职平台 丨 冀ICP备15013734
+				</p>
+			</div>
+		</div>
+
+		<script type="text/javascript">
+			$(document).ready(function() {
+				var username = getCookie("username");
+				$("#user").html(username);
+				doMeun(username);
+				doget();
+			});
+			
+			 function doget() {
+					$.get("/noctice/findObject",function(result){
+						console.log(result.data);
+						/**each(data需要遍历的数据，遍历需要做的操作)
+						 * */
+						$.each(result.data,function(index,user){
+							/*var user=result[index];*/
+							var id=user.title;
+							var name=user.context;
+							var age=user.createtime;
+							var sex= user.publish;
+							console.log(name)
+							var tr="<tr align='center'><td>"+id+"</td><td>"+name+"</td><td>"+age+"</td><td>"+sex+"</td><td><input type='button' value='删除' onclick='dodel("+id+")'/></td></tr>";
+							//选择器
+							$("table").append(tr);
+						});
+					});
+					
+					
+				}
+
+			
+			
+			
+			
+			
+			
+			
+			
+		</script>
+
+	</body>
+
+</html>

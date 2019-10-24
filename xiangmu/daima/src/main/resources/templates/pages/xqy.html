@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>兼职招聘信息-向钱看</title>
+<link type="text/css" rel="stylesheet" href="css/common.css" />
+<link type="text/css" rel="stylesheet" href="css/home.css" />
+<script type="text/javascript" src="js/jquery-1.4.2.js"></script>
+<script type="text/javascript" src="js/grtiaozhuan.js"></script>
+<script type="text/javascript" src="js/tiaozhuan.js"></script>
+</head>
+<body>
+	<!--头部-->
+	<div class="head">
+		<div class="wrap">
+			<span class="fr"> <a class="mr15" href="doReject">注册</a> <a
+				href="#">关于我们</a>
+			</span>
+			<div class="mr20 city">
+				<i>石家庄市</i> <span>[切换城市]</span> <em></em>
+				<div class="choice">
+					<a href="#">石家庄市</a> <a href="#">天津市</a> <a href="#">郑州市</a> <a
+						href="#">济南市</a> <a href="#">太原市</a> <a href="#">北京市</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--导航-->
+	<div class="nav">
+		<div class="wrap clearfix">
+			<a class="fl" href="#"><img src="img/logo.png"></a>
+			<div class="navcont fl" style="width: 400px;">
+				<a onclick="doindex()">全部兼职</a> <a onclick="dogrxx()">我的中心</a>
+			</div>
+			<a class="fabu fl" onclick="add()">报名</a>
+			<div class="search fr"></div>
+		</div>
+	</div>
+	<div id="test"></div>
+	<form id="form1">
+	<input type="hidden" name="mid" id="mid" value="" />
+	<input type="hidden" name="username" id="username" value="" />
+</form>
+	<div class="foot mt30">
+		<div class="wrap center">©2019 德哥苹果食品有限公司丨 向钱看，专属兼职神器 丨
+			冀ICP备15013734</div>
+	</div>
+	<div class="gotop"></div>
+</body>
+</html>
+<script type="text/javascript">
+
+
+	/*ajax请求  */
+	$(document).ready(function() {
+	
+		var username = getCookie("username");
+		$("#user").html(username);
+		var Request = new Object();
+		Request = GetRequest();
+		var id = Request['id']
+	
+		$("#mid").val(id);
+		$("#username").val(username);
+		// 参数1 = Request['参数1'];
+		
+		
+		$.ajax({
+			
+			url : "message/doFindObjectById?id=" + id,//后台请求的数据，用的是PHP
+			dataType : "json",//数据格式 
+			type : "post",//请求方式
+			async : false,//是否异步请求
+			
+			success : function(data) { //如果请求成功，返回数据。
+				console.log(data);
+				var html = "";
+				var ca = data.data;
+				
+				for (var i = 0; i < ca.length; i++) { //遍历data数组
+					var ls = ca[i];
+				
+					html += doinde(ls);
+				}
+				$("#test").html(html); //在html页面id=test的标签里显示html内容
+			}
+		})
+	});
+	function GetRequest() {
+		var url = location.search; //获取url中"?"符后的字串
+		var theRequest = new Object();
+		if (url.indexOf("?") != -1) {
+			var str = url.substr(1);
+			strs = str.split("&");
+			for (var i = 0; i < strs.length; i++) {
+				theRequest[strs[i].split("=")[0]] = unescape(strs[i].split("=")[1]);
+			}
+		}
+		return theRequest;
+	}
+	function add() {
+		
+		alert("提示:报名前请确认个人信息是否完善,否则将报名失败!请务必保持个人信息的真实性!");
+		var username = getCookie("username");
+	
+		$.ajax({ //几个参数需要注意一下
+			type : "POST",//方法类型
+			dataType : "json",//预期服务器返回的数据类型
+			url : "user/doFindUserByUserName?username="+username,//url
+			success : function(data) {
+				//console.log(data.data.qufen);
+				var ca=data.data.qufen;
+				
+			
+				//console.log(ca);
+				if(ca==2){
+					alter("企业账号不能参与报名工作!");
+					window.location.href = "doCompany";
+					return;
+					}else{
+						alert("报名成功")
+					}
+			}
+					});
+		
+		
+		var Request = new Object();
+		Request = GetRequest();
+		var id = Request['id']
+		var username = getCookie("username");
+		$.ajax({ //几个参数需要注意一下
+			type : "POST",//方法类型
+			dataType : "json",//预期服务器返回的数据类型
+			url : "zjs/doInsertObject",//url
+			data : $('#form1').serialize(),
+			success : function(result) {
+				console.log(result);//打印服务端返回的数据(调试用)
+				window.location.href = "doPersonjz";
+			},
+			error : function() {
+				alert("异常！");
+			}
+		});
+	}
+		Date.prototype.Format = function (fmt) { // author: meizz
+		    var o = {
+		        "M+": this.getMonth() + 1, // 月份
+		        "d+": this.getDate(), // 日
+		        "h+": this.getHours(), // 小时
+		        "m+": this.getMinutes(), // 分
+		        "s+": this.getSeconds(), // 秒
+		        "q+": Math.floor((this.getMonth() + 3) / 3), // 季度
+		        "S": this.getMilliseconds() // 毫秒
+		    };
+		    if (/(y+)/.test(fmt))
+		        fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+		    for (var k in o)
+		        if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length === 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+		    return fmt;
+		}
+
+	/* 创建当前行td元素 */
+	function doinde(ls) {
+		var tds = "<div class='wrap clearfix'>" + "<div class='sub_cont fl'>"
+				+ "<div class='box mt10 list'>"
+				+ "<div class='title fontS16 clearfix'>" + "<span class='fl'>"
+				+ ls.name
+				+ "</span>"
+				+ "</div>"
+				+ "<div class='lineH36'>"
+				+ "<em class='fontC02 fr'>"
+				+ ls.money
+				+ "元/天</em>"
+				+ "<span>类型："
+				+ ls.classw
+				+ "</span>丨"
+				+ "<span>发布时间："
+				+ (new Date(ls.createtime).Format("yyyy-MM-dd"))
+				+ "</span>"
+				+ "</div>"
+				+ "<div class='lineH36'>"
+				+ "<span>浏览："
+				+ ls.name
+				+ "</span>丨"
+				+ "<span>已报名："
+				+ ls.uu
+				+ "</span>"
+				+ "<p>温馨提示："
+				+ ls.name
+				+ "</p>"
+				+ "</div>"
+				+ "<div class='card mt10'>"
+				+ "<span>"
+				+ ls.name
+				+ "</span> </div>"
+				+ "</div>"
+				+ "<div class='box mt10'>"
+				+ "<div class='clearfix'>"
+				+ "<ul class='news lineH28'>"
+				+ "<li class='fontBold fontS16'>招聘信息</li>"
+				+ "<li>招聘人数："
+				+ ls.number
+				+ "</li>"
+				+ "<li>工作日期："
+				+ ls.worktime
+				+ "</li>"
+				+ "<li>结算方式："
+				+ ls.pay
+				+ "</li>"
+				+ "<li>联 系 人："
+				+ ls.boss
+				+ "</li>"
+				+ "<li>联系电话："
+				+ /* ls.tel */"报名后可以查看"
+				+ "</li>"
+				+ "<li>工作地点："
+				+ ls.address
+				+ "</li>"
+				+ "</ul>"
+				+ "</div>"
+				+ "<div class='detail mt20'>"
+				+ "<p class='fontBold fontS16'>兼职内容</p>"
+				+ "<p>"
+				+ ls.context
+				+ "</p>"
+				+ "</div>"
+				+ "<div class='center mt30'>"
+				+ "</div>"
+				+ "</div>"
+				+ "</div>"
+				+ "<div class='side fr'>"
+				+ "<div class='box mt10'>"
+				+ "<p class='fontBold fontS16'>公司信息</p>"
+				+ "<ul class='lineH28 mt10'>"
+				+ "<li>公司名称："
+				+ ls.cname
+				+ "</li>"
+				+ "<li>公司地址："
+				+ ls.cadd
+				+ "</li>"
+				+ "<li>企业认证："
+				+ ls.ca
+				+ "</li>"
+				+ "<li>工资保障："
+				+ ls.ca
+				+ "</li>"
+				+ "<li>公司电话："
+				+ ls.ctel
+				+ "</li>"
+				+ "</ul>"
+				+ "</div>"
+				+ "<div class='box mt10'>"
+				+ "<p class='fontBold fontS16'>"
+				+ "该单位的其他兼职"
+				+ "</p>"
+				+ "<ul class='other mt10'>"
+				+ "</ul>"
+				+ "</div>" + "</div>" + "</div>";
+		return tds;
+	}
+</script>

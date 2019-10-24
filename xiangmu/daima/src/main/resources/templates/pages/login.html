@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>向钱看-快乐生活，快乐工作，尽在向钱看</title>
+<link type="text/css" rel="stylesheet" href="css/common.css" />
+<link type="text/css" rel="stylesheet" href="css/home.css" />
+<script type="text/javascript" src="js/jquery-1.4.2.js"></script>
+<script type="text/javascript" src="js/tiaozhuan.js"></script>
+<script type="text/javascript" src="js/grtiaozhuan.js"></script>
+</head>
+
+<body>
+	<!--头部-->
+	<div class="head">
+		<div class="wrap">
+			<span class="fr"> <a href="doLogin">登录</a>丨 <a class="mr15"
+				href="doReject">注册</a> <a href="">关于我们</a>
+			</span>
+			<div class="mr20 city">
+				<i>石家庄市</i> <span>[切换城市]</span> <em></em>
+				<div class="choice">
+					<a href="#">石家庄市</a> <a href="#">天津市</a> <a href="#">郑州市</a> <a
+						href="#">济南市</a> <a href="#">太原市</a> <a href="#">北京市</a>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="nav2">
+		<div class="wrap center">
+			<a href="doIndex"><img src="img/logo.png"></a>
+		</div>
+	</div>
+	<div class="wrap loginbox" style="min-height: 412px; margin-top: 80px;">
+		<div class="login">
+			<ul class="tab_nav clearfix">
+				<li onclick="selectUtype('1');huan()">求职用户</li>
+				<li onclick="selectUtype('2');huan()">企业用户</li>
+			</ul>
+			<input type="hidden" name="utype" id="utype" value="1" />
+			<div class="tab_box mt10">
+
+				<div class="tab_cont">
+					<ul>
+						<form method="post" id="form1">
+							<li><input placeholder="账号" class="txt" type="text"
+								name="username" id="username" value=""></li>
+							<li><input placeholder="密码" class="txt" type="password"
+								name="password" id="password" value=""></li>
+							<li><input placeholder="" class="txt" type="hidden"
+								name="qufen" id="qufen" value="1"></li>
+						</form>
+						<!-- <a href="login.php?act=setpwd" class="fr">忘记密码？</a><input type="checkbox" name="remember_cbox" id="remember_cbox"><label class="ml5">记住密码</label></li> -->
+						<li><input value="立即登录" onclick="login()" class="btn"
+							type="button" id="login"></li>
+						<li class="fontS12 center">还没有向钱看<span id="huan">个人</span>账号，
+							<a class="fontC03 enter" href="doReject">立即注册<i></i></a>
+							<a class="fontC03 enter" href="login">超管登录<i></i></a>
+						</li>
+					</ul>
+				</div>
+
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript">
+		function selectUtype(a) {
+			$("#qufen").val(a);
+
+		}
+
+		function huan() {
+			var value = $("#huan").text();
+			if (value == '个人') {
+				$("#huan").text('企业');
+			} else {
+				$("#huan").text('个人');
+			}
+		}
+		function login() {
+			var ddd = $("#qufen").val();
+			var uname = $("#username").val();
+			var pwd = $("#password").val();
+			if (uname == null || uname == "") {
+
+				alert("账号不能为空");
+				return;
+			} else if (pwd == null || pwd == "") {
+
+				alert("密码不能为空");
+				return;
+			}else if(uname=="root"){
+				$("#qufen").val(0);
+			}
+			console.log(ddd);
+
+			$.ajax({ //几个参数需要注意一下
+				type : "POST",//方法类型
+				dataType : "json",//预期服务器返回的数据类型
+				url : "user/doLogin",//url
+				data : $('#form1').serialize(),
+				success : function(data) {
+					//console.log(data.data.qufen);
+					var ca = data.data.qufen;
+					var val = data.data.username;
+					console.log(ca);
+					if (ca == ddd) {
+						if (ca == 1) {
+							setCookie("username", val);
+							window.location.href = "doIndex";
+						} else {
+							setCookie("username", val);
+							window.location.href = "doCompany";
+						}
+					} else {
+						if (ca == 1) {
+							alert("你是个人用户,请您到个人用户登录!");
+						} else {
+							alert("你是企业用户,请您到企业用户登录!");
+						}
+					}
+
+					/* 	window.location.href = "doLogin"; */
+				},
+				error : function() {
+					alert("不在 访问的时间内！");
+				}
+			});
+		}
+		function setCookie(cname, val) {
+			var d = new Date();
+			d.setTime(d.getTime() + (60 * 60 * 1000));
+			var expires = "expires=" + d.toGMTString();
+			document.cookie = cname + "=" + val + "; " + expires;
+		}
+	</script>
+	<div class="foot mt30">
+		<div class="wrap center">©2019 德哥苹果食品有限公司 丨 专属兼职神器 丨
+			冀ICP备15013734</div>
+	</div>
+	<div class="gotop"></div>
+	<script type="text/javascript" language="javascript"
+		src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
+	<script type="text/javascript" language="javascript" src="js/common.js"></script>
+
+</body>
+
+</html>

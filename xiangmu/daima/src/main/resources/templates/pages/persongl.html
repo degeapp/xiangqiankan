@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>人员管理，快乐工作，尽在向钱看</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="renderer" content="webkit">
+<meta http-equiv="X-UA-Compatible" content="IE=9">
+<!-- 引入 Bootstrap -->
+<link
+	href="http://www.happyjob.com/templates/new_temp/css/bootstrap.min.css"
+	rel="stylesheet">
+<link href="http://www.happyjob.com/templates/new_temp/css/newpc.css"
+	rel="stylesheet">
+<link
+	href="http://www.happyjob.com/templates/new_temp/css/datepicker.css"
+	rel="stylesheet">
+
+<link rel="stylesheet" type="text/css" href="css/easyui.css" />
+<script
+	src="https://cdn.bootcss.com/FileSaver.js/2014-11-29/FileSaver.js"></script>
+<script type="text/javascript" src="js/jquery-1.4.2.js"></script>
+<script type="text/javascript" src="js/tiaozhuan.js"></script>
+<script type="text/javascript" src="js/grtiaozhuan.js"></script>
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript" src="js/jquery.easyui.min.js"></script>
+<script type="text/javascript" src="js/test.js"></script>
+<script type="text/javascript" src="js/jquery.base64.js"></script>
+</head>
+
+<body>
+	<div class="nav_top">
+		<div class="container">
+			<a class="pull-right" href="#">关于我们</a> <span class="pull-right mr15">您好<a
+				onclick="doPersonmin" id="user"></a><a href="doLogout" class="ml10">[注销]</a></span>
+		</div>
+	</div>
+
+	<div class="navbar nav01">
+		<div class="container">
+			<div class="navbar-header">
+				<button class="navbar-toggle collapsed" type="button"
+					data-toggle="collapse" data-target=".navbar-collapse">
+					<span class="sr-only">向钱看</span> <span class="icon-bar"></span> <span
+						class="icon-bar"></span> <span class="icon-bar"></span>
+				</button>
+				<span class="navbar-brand clearfix"> <a href="#"><img
+						class="pull-left" src="img/logo.png"></a>
+				</span>
+			</div>
+			<div class="navbar-collapse collapse" role="navigation">
+				<!-- <a href="#" onclick="doxzzw()"
+					class="btn btn-danger pull-right mt10 hidden-xs"
+					style="color: #fff">发布新职位</a> -->
+				<!-- 菜单栏 -->
+				<!--  -->
+				<ul class="nav navbar-nav mt10 ml10" id="menu">
+					<li><a onclick="dogszy()">公司主页</a></li>
+					<li class="cur"><a onclick="dozwgl()">职位管理</a></li>
+					<li><a onclick="dogrzx()">个人中心</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+
+	<div class="container">
+		<div class="box01">
+			<div class="search_box">
+				<form class="form-inline" role="form">
+					<input type="hidden" name="act" value="jobs_manage">
+					<div class="form-group">
+						<label for="">单位名称：</label> <input type="text" id="text"
+							class="form-control" style="width: 260px;" name="jobs_name"
+							value="">
+					</div>
+					<!-- <div class="form-group">
+						<label for="">工作时间：</label> <input type="text"
+							class="form-control" value="" id="dpd1" name="starttime">
+						<span>至</span> <input type="text" class="form-control" value=""
+							id="dpd2" name="endtime">
+					</div> -->
+					<input type="hidden" name="status" value="0"> <input
+						type="hidden" value="1" name="page_num" id="page_num" />
+					<div class="form-group">
+						<button type="button" class="btn btn-success" onclick="search()">搜索</button>
+					</div>
+				</form>
+			</div>
+			<!--职位发布请详情在tiaozhuan.js中  -->
+			<div class="tabbable resume mt20">
+				<ul class="nav nav-tabs pull-left mt5">
+					<li class="active borig"><a class="borig" onclick="yfb()">所有在注册的人员</a></li>
+					<li class="borig"><a onclick="pdsh()">待审核人员</a></li>
+					<li class="borig"><a onclick="pshr()">审核不通过人员</a></li>
+					<li class="borig"><a onclick="pshp()">审核通过人员</a></li>
+					<li class=""><a onclick="pvip()">VIP账户</a></li>
+				</ul>
+				<a class="btn btn-danger" href="#" onclick="export_excel()">下载数据</a>
+				<span>（点击按钮下载到Excel）</span>
+			</div>
+			<div class="tab-content mt10">
+				<div class="tabox tab-pane active" id="panel01">
+					<table class="table table-bordered text-center table-striped"
+						id="table_1">
+						<thead>
+							<tr bgcolor="#5dcdbf">
+								<th>人员账号</th>
+								<th>企业负责人</th>
+								<th>企业名称</th>
+								<th>企业电话</th>
+								<th>申请时间</th>
+								<th>当前状态</th>
+								<th>操作</th>
+							</tr>
+						</thead>
+						<tbody id="tr">
+							<tr>
+								<td colspan="7">数据正在加载中...</td>
+							</tr>
+						</tbody>
+						<script type="text/javascript">
+							function search() {
+								var username = getCookie("username");
+								var name = $("#text").val();
+								dosearch(username, name)
+							}
+
+							function dosearch(username, name) {
+								var params = {
+									username : username,
+									name : name
+								}
+								var url = "message/findObjectsByUser";
+								$.post(url, params, function(result) {
+									if (result.state == 1) {
+										console.log(result.data);
+
+										var html = "";
+										var ca = result.data;
+										for (var i = 0; i < ca.length; i++) { //遍历data数组
+											var ls = ca[i];
+											html += doinde(ls);
+
+										}
+										$("#tr").html(html); //在html页面id=test的标签里显示html内容
+
+									} else {
+										alert(456);
+									}
+								});
+							}
+
+							function export_excel() {
+								$("#table_1").tableExport({
+									type : 'excel',
+									/* 		fileName : new Date().getTime(), */
+									escape : 'false'
+								/* 	ignoreColumn: '[5]' */
+								});
+
+							}
+
+							function getCookie(cname) {
+								var name = cname + "=";
+								var ca = document.cookie.split(';');
+								for (var i = 0; i < ca.length; i++) {
+									var c = ca[i].trim();
+									if (c.indexOf(name) == 0) {
+										return c.substring(name.length,
+												c.length);
+									}
+								}
+								return "";
+							}
+							$(document).ready(function() {
+								var zt = 1;
+								var username = getCookie("username");
+								$("#user").html(username);
+								doMeun(username);
+								if (!("root" == username)) {
+									alert("对不起，系统检测到您不是管理员不能对本页面进行操作！");
+									window.location.href = "doCompany";
+								}
+								/* 下面的方法的菜单栏的测试 */
+								doMeun(username);
+							
+								var url="company/findCompanyByUserRoot";
+								
+								$.post(url,function(data) {
+									if (data.state == 1) {
+										console.log(data);
+										var html = "";
+										var ca = data.data;
+										for (var i = 0; i < ca.length; i++) { //遍历data数组
+											var ls = ca[i];
+											html += doinde(ls);
+										}
+										$("#tr").html(html); //在html页面id=test的标签里显示html内容
+									}
+								})
+							})
+
+							/* 创建当前行td元素 */
+							function doinde(ls) {
+								
+								var a;
+								if(ls.qufen==1){
+									a="正常";
+								}else if(ls.qufen==2){
+									a="待审核";
+								}else if(ls.qufen==3){
+									a="VIP用户";
+								}else if(ls.qufen==4){
+									a="审核失败";
+								}
+								
+								var tds = "<tr>" + "<td>" + ls.username + "</td>"
+										+ "<td>" + ls.boss + "</td>" + "<td>"
+										+ ls.name + "</td>" + "<td>"
+										+ ls.tel + "</td>" + "<td>"
+										+ ls.createtime + "</td>" + "<td>"
+										+ a + "</td>"
+										+ "<td><a onclick='doDeleteObject("
+										+ ls.id + ")'>delete</a>"
+										+ "&nbsp;<a onclick='doUpdateObject("
+										+ ls.id + ")'>update</a>"
+										+ "</td>"
+								"</tr>";
+								return tds;
+							}
+							function doUpdateObject(id) {
+								window.location.href = "doUpdate?id=" + id + "";
+							}
+							function doDeleteObject(id) {
+								//1.params
+								var params = {
+									"id" : id
+								};
+								//2.url
+								var url = "message/doDeleteObject"
+								//3.ajax request
+								$.post(url, params, function(result) {
+									if (result.state == 1) {
+										alert(result.message);
+										window.location.href = "doCompany";
+									} else {
+										alert(result.message);
+									}
+								})
+							}
+						</script>
+					</table>
+				</div>
+				<input type="hidden" id="jobid" value=""> <input
+					type="hidden" id="jobs_name" value="">
+				<div class="text-center">
+					<ul class="pagination">
+						<li><a disabled>上一页</a></li>
+						<li class="active"><a>1</a></li>
+						<li><a disabled>下一页</a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--弹出框-->
+
+	<div class="foot mt20">
+		<div class="container">
+			<p class="text-center">©2019 德哥苹果园欢迎您 丨 快速到岗、高效匹配的兼职平台 丨
+				冀ICP备15013734</p>
+		</div>
+	</div>
+
+</body>
+
+</html>

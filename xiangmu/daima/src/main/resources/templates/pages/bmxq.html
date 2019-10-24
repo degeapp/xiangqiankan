@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>向钱看-快乐生活，快乐工作，尽在向钱看</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="renderer" content="webkit">
+<meta http-equiv="X-UA-Compatible" content="IE=9">
+<script type="text/javascript" src="js/jquery-1.4.2.js"></script>
+<!-- 引入 Bootstrap -->
+<link
+	href="http://www.happyjob.com/templates/new_temp/css/bootstrap.min.css"
+	rel="stylesheet">
+<link href="http://www.happyjob.com/templates/new_temp/css/newpc.css"
+	rel="stylesheet">
+<link
+	href="http://www.happyjob.com/templates/new_temp/css/datepicker.css"
+	rel="stylesheet">
+<script type="text/javascript" src="js/jquery-1.4.2.js"></script>
+<script type="text/javascript" src="js/tiaozhuan.js"></script>
+<script type="text/javascript" src="js/grtiaozhuan.js"></script>
+</head>
+
+<body>
+	<div class="nav_top">
+		<div class="container">
+			<a class="pull-right" href="doAbout">关于我们</a> <span
+				class="pull-right mr15">您好<a onclick="dogrzx()" id="user"></a><a
+				href="doLogout" class="ml10">[注销]</a></span>
+		</div>
+	</div>
+
+	<div class="navbar nav01">
+		<div class="container">
+			<div class="navbar-header">
+				<button class="navbar-toggle collapsed" type="button"
+					data-toggle="collapse" data-target=".navbar-collapse">
+					<span class="sr-only">向钱看</span> <span class="icon-bar"></span> <span
+						class="icon-bar"></span> <span class="icon-bar"></span>
+				</button>
+				<span class="navbar-brand clearfix"> <a href="#"><img
+						class="pull-left" src="img/logo.png"></a>
+				</span>
+			</div>
+			<div class="navbar-collapse collapse" role="navigation">
+				<a href="javascript:void(0);"
+					onclick="doxzzw()"
+					class="btn btn-danger pull-right mt10 hidden-xs"
+					style="color: #fff">发布新职位</a>
+
+				<ul class="nav navbar-nav mt10 ml10" id="menu">
+					<li><a onclick="dogszy()">公司主页</a></li>
+					<li class="cur"><a onclick="dozwgl()">职位管理</a>	</li>
+					<li><a onclick="dogrzx()">个人中心</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+
+	<div class="container">
+		<div class="box01">
+			<div class="search_box">
+				<form class="form-inline" role="form" method="get" action=""
+					id="manage_form" onclick="return checkform()">
+					<input type="hidden" name="act" value="jobs_manage">
+					<div class="form-group">
+						<label for="">职位名称：</label> <input type="text"
+							class="form-control" style="width: 260px;" name="jobs_name"
+							value="">
+					</div>
+					<div class="form-group">
+						<label for="">工作时间：</label> <input type="text"
+							class="form-control" value="" id="dpd1" name="starttime">
+						<span>至</span> <input type="text" class="form-control" value=""
+							id="dpd2" name="endtime">
+					</div>
+					<input type="hidden" name="status" value="0"> <input
+						type="hidden" value="1" name="page_num" id="page_num" />
+					<div class="form-group">
+						<button type="submit" class="btn btn-success">搜索</button>
+					</div>
+				</form>
+			</div>
+			
+			<div class="tab-content mt10">
+				<div class="tabox tab-pane active" id="panel01">
+					<table class="table table-bordered text-center table-striped">
+						<thead>
+							<tr bgcolor="#5dcdbf">
+								<th>序号</th>
+								<th>申请人姓名</th>
+								<th>电话</th>
+								<th>性别</th>
+								<th>健康证</th>
+								<th>学历</th>
+								<th>城市</th>
+								<th>签到状态</th>
+								<th>签到时间</th>
+								<th>签到地点</th>
+								<th>用户名</th>
+								<th>操作</th>
+							</tr>
+						</thead>
+						<tbody id="tr">
+							<tr>
+								<td colspan="7">数据正在加载中...</td>
+							</tr>
+						</tbody>
+						<script type="text/javascript">
+						function dofindid(){
+							var url = location.search; //获取url中"?"符后的字串
+							if (url.indexOf("?") != -1) { //判断是否有参数
+							var str = url.substr(1); //从第一个字符开始 因为第0个是?号 获取所有除问号的所有符串
+							strs = str.split("=");
+							var id=strs[1];
+							
+							return id;
+							}
+						}
+							$(document).ready(function() {
+								 var username=getCookie("username");
+								 $("#user").html(username);
+								 doMeun(username);
+								
+								
+								
+								var id = dofindid();
+								$.ajax({
+									url : "zjs/findObjectsByMid?mid="+id,//后台请求的数据，用的是PHP
+									dataType : "json",//数据格式 
+									type : "post",//请求方式
+									async : false,//是否异步请求
+									success : function(data) { //如果请求成功，返回数据。
+										console.log(data);
+										var html = "";
+										var ca = data.data;
+										for (var i = 0; i < ca.length; i++) { //遍历data数组
+											var ls = ca[i];
+											// ls.data("id",ca[i].id);
+											html += doindex(ls);
+										}
+										$("#tr").html(html); //在html页面id=test的标签里显示html内容
+									}
+								})
+							})
+							/* 创建当前行td元素 */
+							function doindex(ls) {
+								console.log(ls);
+								var a;//签到状态
+								var b;//签到时间
+								var c;//签到地点
+								if(ls.qdtime==null){
+									a="未签到"
+									b="暂无签到时间"
+									c="暂无签到地点"
+								}else{
+									a="已签到"
+									b=(new Date(ls.qdtime).Format("yyyy-MM-dd hh:mm:ss"))
+									c=ls.addr
+								}
+								var tds = 	"<tr>"+
+											"<td>"+ls.id+"</td>"+
+											"<td>"+ls.name+"</td>"+
+											"<td>"+ls.phone+"</td>"+
+											"<td>"+ls.gender+"</td>"+
+											"<td>"+ls.healthy+"</td>"+
+											"<td>"+ls.learn+"</td>"+
+											"<td>"+ls.city+"</td>"+
+											"<td>"+a+"</td>"+
+											"<td>"+b+"</td>"+
+											"<td>"+c+"</td>"+
+											"<td>"+ls.username+"</td>"+
+											"<td><p onclick='doDeleteObject(this)'>delete</p></td>"+
+										    "</td>"+
+											"</tr>";
+								return tds;
+							}
+							
+							
+							Date.prototype.Format = function (fmt) { // author: meizz
+							    var o = {
+							        "M+": this.getMonth() + 1, // 月份
+							        "d+": this.getDate(), // 日
+							        "h+": this.getHours(), // 小时
+							        "m+": this.getMinutes(), // 分
+							        "s+": this.getSeconds(), // 秒
+							        "q+": Math.floor((this.getMonth() + 3) / 3), // 季度
+							        "S": this.getMilliseconds() // 毫秒
+							    };
+							    if (/(y+)/.test(fmt))
+							        fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+							    for (var k in o)
+							        if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length === 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+							    return fmt;
+							}
+							
+							
+							
+							
+							
+							
+							
+							
+							
+							doDeleteObject=function(obj){
+							//	console.log($(obj).parent("td").text());
+								var name =$(obj).parent("td").prev().html();
+								console.log(name);
+								var mid = dofindid();
+								   //1.params
+								   var params={
+										   "username":name,
+										   "mid":mid
+										   };
+								   console.log(params);
+								   //2.url
+								   var url="zjs/doDeleteObjectByUserName"
+								   //3.ajax request
+								   $.post(url,params,function(result){
+									   if(result.state==1){
+										   alert(result.message);
+										   window.location.href = "doCompany";
+									   }else{
+										   alert(result.message);
+									   }
+								   })
+							   }
+						</script>
+					</table>
+				</div>
+				<input type="hidden" id="jobid" value=""> <input
+					type="hidden" id="jobs_name" value="">
+				<div class="text-center">
+					<ul class="pagination">
+						<li><a disabled>上一页</a></li>
+						<li class="active"><a>1</a></li>
+						<li><a disabled>下一页</a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--弹出框-->
+	
+	<div class="foot mt20">
+		<div class="container">
+			<p class="text-center">©2019 德哥苹果食品有限公司 丨 快速到岗、高效匹配的兼职平台 丨
+				冀ICP备15013734</p>
+		</div>
+	</div>
+	
+</body>
+
+</html>

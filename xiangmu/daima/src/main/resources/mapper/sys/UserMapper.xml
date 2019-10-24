@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jianz.degeapp.dao.UserDao">
+	<insert id="insertObject" 
+			parameterType="com.jianz.degeapp.entity.User" 
+			useGeneratedKeys="true" 
+			keyProperty="id" >
+		insert into user
+		(username,password,salt,qufen,createtime)
+		values
+		(#{username},#{password},#{salt},#{qufen},now())
+	</insert>
+	<select id="findObjectByUserName" resultType="int">
+		select count(*) from user where username=#{username}
+	</select>
+	<select id="findUserByUserName" resultType="com.jianz.degeapp.entity.User">
+		select * from user where username=#{username}
+	</select>
+	
+	<update id="updatePassword">
+         update user
+         set password=#{password},
+             salt=#{salt}
+         where username=#{username}
+	</update>
+	
+	
+</mapper>
